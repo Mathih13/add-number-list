@@ -29,7 +29,11 @@ function submitValues() {
 
   if (result != undefined) {
     resultText += 'Total i kasse: ' + result + 'kr <br>';
-    resultText += 'Tatt ut: ' + prompt('Total: ' + result + '. Tatt ut? (Blank hvis 0...)', '');
+    var p = prompt('Total: ' + result + '. Tatt ut? (Blank hvis 0...)', '');
+    if (p != '') {
+      resultText += 'Tatt ut: ';
+      resultText += p;
+    }
     get('result').innerHTML = resultText;
     PrintElem(get('result'));
   }
