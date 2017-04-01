@@ -42,16 +42,21 @@ function PrintElem(elem)
     var win = window.open('', 'PRINT', 'height=400,width=600');
 
     win.document.write('<html><head><title>' + document.title  + '</title>');
+    win.document.write('<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">');
     win.document.write('</head><body >');
     win.document.write('<h1> Kasse ' + dateText + '</h1>');
-    win.document.write(elem.innerHTML);
-    win.document.write('</body></html>');
+    win.document.write('<h3 style="font-size: 200%">' + elem.innerHTML + '</h3>');
+    win.document.write('</body> <footer>mathih13.github.com Kasseteller</footer></html>');
 
     win.document.close(); // necessary for IE >= 10
     win.focus(); // necessary for IE >= 10*/
 
-    win.print();
-    win.close();
+    setTimeout(function () {
+      win.print();
+      win.close();
+    }, 500);
+
+
 
     return true;
 }
