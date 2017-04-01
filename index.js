@@ -28,8 +28,10 @@ function submitValues() {
   result = calculator.calculate(dict);
 
   if (result != undefined) {
-    resultText += 'Total i kasse: ' + result + 'kr';
+    resultText += 'Total i kasse: ' + result + 'kr <br>';
+    resultText += 'Tatt ut: ' + prompt('Total: ' + result + '. Tatt ut?', 'Blank hvis 0...');
     get('result').innerHTML = resultText;
+    PrintElem(get('result'));
   }
 }
 
