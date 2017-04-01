@@ -34,8 +34,11 @@ function submitValues() {
       resultText += 'Tatt ut: ';
       resultText += p;
     }
+
     get('result').innerHTML = resultText;
     PrintElem(get('result'));
+    var audio = new Audio('audio/Noice.mp3');
+    audio.play();
   }
 }
 
