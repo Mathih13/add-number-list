@@ -31,14 +31,14 @@ function submitValues() {
     resultText += 'Total i kasse: ' + result + 'kr <br>';
     var p = prompt('Total: ' + result + '. Tatt ut? (Blank hvis 0...)', '');
     if (p != '') {
-      resultText += 'Tatt ut: ';
-      resultText += p;
+      resultText += 'Tatt ut: ' + p + 'kr<br>';
+      resultText += 'Igjen i kasse: ' + (result - p) + 'kr';
     }
 
     get('result').innerHTML = resultText;
+    //PlayAudio('audio/Noice.mp3')
     PrintElem(get('result'));
-    var audio = new Audio('audio/Noice.mp3');
-    audio.play();
+
   }
 }
 
@@ -68,6 +68,13 @@ function PrintElem(elem)
 
 
     return true;
+}
+
+function PlayAudio(path) {
+  var audio = new Audio(path);
+  if (audio != undefined) {
+    audio.play();
+  }
 }
 
 

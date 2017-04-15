@@ -16,7 +16,6 @@ function Calculator() {
       }
     }
 
-    console.log(resultArray);
     return resultArray.reduce(this.getSum);
   };
 
