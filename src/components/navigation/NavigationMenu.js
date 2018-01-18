@@ -29,7 +29,7 @@ export default class NavigationMenu extends Component {
           <MenuItem primaryText="Logg"
             onClick={() => NavigationActions.changeCurrentElement('Log')}
           />
-          <MenuItem primaryText="Kilde" />
+          <MenuItem primaryText="Kilde" onClick={() => window.location = 'https://github.com/Mathih13/add-number-list'}/>
         </IconMenu>
       </div>
     )

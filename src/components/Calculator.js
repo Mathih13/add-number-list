@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import firebase from '../firebase'
 import {defaultTheme} from '../theme'
 
 export default class Calculator extends Component {
@@ -24,7 +24,7 @@ export default class Calculator extends Component {
             resultText += dict[item] + 'x' + item + 'kr' + '<br>';
         }
 
-        var result = new Calculator().calculate(dict);
+        var result = this.calculate(dict)
 
         if (result != undefined) {
             resultText += 'Total i kasse: ' + result + 'kr <br>';
@@ -34,9 +34,19 @@ export default class Calculator extends Component {
             resultText += 'Igjen i kasse: ' + (result - p) + 'kr';
             }
 
-            get('result').innerHTML = resultText;
+            this.refs.result.innerHTML = resultText;
             //PlayAudio('audio/Noice.mp3')
-            this.PrintElem(get('result'));
+            var ref = firebase.database().ref('/prints').push()
+            ref.set({
+              raw: dict,
+              inRegister: result,
+              resultText: resultText,
+              removed: p,
+              remaining: result - p
+            })
+            this.PrintElem(this.refs.result);
+
+            this.refs.result.innerHTML = '';
         }
     }
 
@@ -58,8 +68,7 @@ export default class Calculator extends Component {
         win.focus(); // necessary for IE >= 10*/
 
         setTimeout(function () {
-        win.print();
-        win.close();
+          win.print();
         }, 500);
 
 
@@ -67,9 +76,31 @@ export default class Calculator extends Component {
         return true;
     }
 
+    calculateTotalAmount = function (value, amount) {
+      return value*amount;
+    };
+  
+    calculate = function (obj) {
+      var resultArray = [];
+      for(var o in obj){
+        if (obj[o] >= 0) {
+          resultArray.push(this.calculateTotalAmount(o, obj[o]));
+        } else {
+          alert('Values cannot be negative!');
+          return;
+        }
+      }
+  
+      return resultArray.reduce(this.getSum);
+    };
+  
+    getSum = function (total, num) {
+      return total + num;
+    }
+
   render() {
     return (
-      <div >
+      <div className="calculatorWrapper">
         <div className="form-group row">
             <label htmlFor={1000} className="col-2 col-form-label">1000</label>
             <div className="col-10">
@@ -108,10 +139,10 @@ export default class Calculator extends Component {
             <input className="form-control" type="number" defaultValue={0} id={1} />
             </div>
             <br />
-            <button type="button" className="btn btn-primary btn-block" onClick={this.submitValues()}>💸</button>
+            <button type="button" className="btn btn-primary btn-block" onClick={() => this.submitValues()}>💸</button>
         </div>
 
-        <div ref="result"/>
+        <div id="result" ref="result"/>
       </div>
     )
   }
@@ -120,31 +151,4 @@ export default class Calculator extends Component {
 function get(id) {
   return document.getElementById(id);
 }
-
-function Calculator() {
-  this.calculateTotalAmount = function (value, amount) {
-    return value*amount;
-  };
-
-  this.calculate = function (obj) {
-    var resultArray = [];
-    for(var o in obj){
-      if (obj[o] >= 0) {
-        resultArray.push(this.calculateTotalAmount(o, obj[o]));
-      } else {
-        alert('Values cannot be negative!');
-        return;
-      }
-    }
-
-    return resultArray.reduce(this.getSum);
-  };
-
-  this.getSum = function (total, num) {
-    return total + num;
-  }
-
-
-}
-
 
