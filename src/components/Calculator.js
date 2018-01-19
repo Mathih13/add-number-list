@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import firebase from '../firebase'
 import {defaultTheme} from '../theme'
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class Calculator extends Component {
 
@@ -36,17 +37,32 @@ export default class Calculator extends Component {
 
             this.refs.result.innerHTML = resultText;
             //PlayAudio('audio/Noice.mp3')
-            var ref = firebase.database().ref('/prints').push()
-            ref.set({
-              raw: dict,
-              inRegister: result,
-              resultText: resultText,
-              removed: p,
-              remaining: result - p
-            })
-            this.PrintElem(this.refs.result);
 
-            this.refs.result.innerHTML = '';
+            if (result != 0) {
+              var ref = firebase.database().ref('/prints').push()
+              ref.set({
+                date: new Date().getTime(),
+                raw: dict,
+                inRegister: result,
+                resultText: resultText,
+                removed: p,
+                remaining: result - p
+              })
+
+              var ref = firebase.database().ref('/stats').child('removed')
+              ref.transaction(count => {
+                if (count === null) {
+                    return count = parseInt(p)
+                } else {
+                    return count + parseInt(p)
+                }
+            })
+
+              this.PrintElem(this.refs.result);
+
+              this.refs.result.innerHTML = '';
+            }
+            
         }
     }
 
@@ -139,7 +155,7 @@ export default class Calculator extends Component {
             <input className="form-control" type="number" defaultValue={0} id={1} />
             </div>
             <br />
-            <button type="button" className="btn btn-primary btn-block" onClick={() => this.submitValues()}>💸</button>
+            <RaisedButton label="💸" backgroundColor={defaultTheme.mainColor} onClick={() => this.submitValues()}/>
         </div>
 
         <div id="result" ref="result"/>
