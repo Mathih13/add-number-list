@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import firebase from '../firebase'
 import {defaultTheme} from '../theme'
 import RaisedButton from 'material-ui/RaisedButton';
-
+import News from './News'
 export default class Calculator extends Component {
 
     submitValues() {
@@ -39,6 +39,7 @@ export default class Calculator extends Component {
             //PlayAudio('audio/Noice.mp3')
 
             if (result != 0) {
+              if (p == '') p = 0
               var ref = firebase.database().ref('/prints').push()
               ref.set({
                 date: new Date().getTime(),
@@ -51,6 +52,7 @@ export default class Calculator extends Component {
 
               var ref = firebase.database().ref('/stats').child('removed')
               ref.transaction(count => {
+                
                 if (count === null) {
                     return count = parseInt(p)
                 } else {
@@ -116,49 +118,56 @@ export default class Calculator extends Component {
 
   render() {
     return (
-      <div className="calculatorWrapper">
-        <div className="form-group row">
-            <label htmlFor={1000} className="col-2 col-form-label">1000</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={1000} />
-            </div>
-            <label htmlFor={500} className="col-2 col-form-label">500</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={500} />
-            </div>
-            <label htmlFor={200} className="col-2 col-form-label">200</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={200} />
-            </div>
-            <label htmlFor={100} className="col-2 col-form-label">100</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={100} />
-            </div>
-            <label htmlFor={50} className="col-2 col-form-label">50</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={50} />
-            </div>
-            <label htmlFor={20} className="col-2 col-form-label">20</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={20} />
-            </div>
-            <label htmlFor={10} className="col-2 col-form-label">10</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={10} />
-            </div>
-            <label htmlFor={5} className="col-2 col-form-label">5</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={5} />
-            </div>
-            <label htmlFor={1} className="col-2 col-form-label">1</label>
-            <div className="col-10">
-            <input className="form-control" type="number" defaultValue={0} id={1} />
-            </div>
-            <br />
-            <RaisedButton label="💸" backgroundColor={defaultTheme.mainColor} onClick={() => this.submitValues()}/>
+      <div className="mainPageWrapper">
+        <News />
+        <div className="calculatorWrapper">
+          <div className="form-group row">
+              <label htmlFor={1000} className="col-2 col-form-label">1000</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={1000} />
+              </div>
+              <label htmlFor={500} className="col-2 col-form-label">500</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={500} />
+              </div>
+              <label htmlFor={200} className="col-2 col-form-label">200</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={200} />
+              </div>
+              <label htmlFor={100} className="col-2 col-form-label">100</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={100} />
+              </div>
+              <label htmlFor={50} className="col-2 col-form-label">50</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={50} />
+              </div>
+              <label htmlFor={20} className="col-2 col-form-label">20</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={20} />
+              </div>
+              <label htmlFor={10} className="col-2 col-form-label">10</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={10} />
+              </div>
+              <label htmlFor={5} className="col-2 col-form-label">5</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={5} />
+              </div>
+              <label htmlFor={1} className="col-2 col-form-label">1</label>
+              <div className="col-10">
+              <input className="form-control" type="number" defaultValue={0} id={1} />
+              </div>
+              <br />
+              <RaisedButton label="💸" backgroundColor={defaultTheme.mainColor} onClick={() => this.submitValues()}/>
+          </div>
+
+
+          
+          <div id="result" ref="result"/>
         </div>
 
-        <div id="result" ref="result"/>
+          
       </div>
     )
   }

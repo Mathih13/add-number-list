@@ -27,15 +27,7 @@
   to { transform: rotate(360deg); }
 }
 
-.calculatorWrapper {
-  margin-top: 2%;
-  border: 2px solid #E3F2FD;
-  border-radius: 2%;
-  margin-left: 30%;
-  margin-right: 30%;
-  padding: 2%;
 
-}
 
 .dataPoint {
   padding-left: 4% !important;
@@ -43,4 +35,23 @@
 
 .dataColumn {
 
+}
+
+.mainPageWrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.calculatorWrapper {
+  margin: 2%;
+  border: 2px solid #E3F2FD;
+  border-radius: 2%;
+  padding: 2%;
+  flex: 1;
+
+}
+
+.news {
+  flex: 1;
+  margin: 2%;
 }

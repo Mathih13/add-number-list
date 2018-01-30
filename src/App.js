@@ -7,6 +7,12 @@ import MainView from './components/MainView'
 
 import NavigationStore from './stores/NavigationStore'
 
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 class App extends Component {
   constructor() {
     super()
@@ -27,10 +33,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <NavigationBar />
-        <MainView element={this.state.currentElement}/>
-      </div>
+        <div className="App">
+          <NavigationBar />
+          {this.props.children}
+        </div>
     );
   }
 }
