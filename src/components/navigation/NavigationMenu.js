@@ -29,7 +29,7 @@ export default class NavigationMenu extends Component {
           <MenuItem primaryText="Hjem"
           containerElement={<Link to={`${process.env.PUBLIC_URL}/`} />}
           />
-          <MenuItem primaryText="Logg" containerElement={<Link to={`${process.env.PUBLIC_URL}/log`} />} />
+          <MenuItem primaryText="Logg" containerElement={<Link to={`${process.env.PUBLIC_URL}/log/`}  />} />
           <MenuItem primaryText="Kilde" onClick={() => window.location = 'https://github.com/Mathih13/add-number-list'}/>
         </IconMenu>
       </div>

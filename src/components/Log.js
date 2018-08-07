@@ -11,6 +11,7 @@ import FlatButton from 'material-ui/FlatButton'
 import ActionPrint from 'material-ui/svg-icons/action/print';
 
 import CircularProgress from 'material-ui/CircularProgress';
+import Progress from './Progress'
 
 import firebase from '../firebase'
 import {defaultTheme} from '../theme'
@@ -20,7 +21,7 @@ export default class Log extends Component {
     super(props)
     this.state = {
       loading: true,
-      firebaseData: []
+      firebaseData: [],
     }
   }
 
@@ -28,16 +29,15 @@ export default class Log extends Component {
     this.fetchData()
   }
 
+
   fetchData() {
     firebase.database().ref('/prints/').once('value', (snapshot) => {
       this.setState({ firebaseData: this.snapshotToArray(snapshot), loading: false })
-
     })
   }
 
   snapshotToArray = (snapshot) => {
     let returnArr = [];
-
     snapshot.forEach(childSnapshot => {
         let item = childSnapshot.val(); 
         item.key = childSnapshot.key;
@@ -45,8 +45,28 @@ export default class Log extends Component {
         returnArr.push(item);
     });
 
-    return returnArr;
+
+    if (this.props.params.search)
+      return this.filter(this.props.params.search, returnArr);
+    else
+      return returnArr.reverse();
   };
+
+  filter(search, array) {
+    let returnArr = [];
+    search = search.toLowerCase();
+    array.forEach(item => {
+      if (!item.removed) item.removed = "";
+      if (item.date.toDateString().toLowerCase().includes(search) ||
+        item.inRegister.toString().toLowerCase().includes(search) ||
+        item.remaining.toString().toLowerCase().includes(search) ||
+        item.removed.toString().toLowerCase().includes(search))  {
+
+        returnArr.push(item);
+      }
+    });
+    return returnArr.reverse();
+  }
 
   PrintObj(obj) {
     
@@ -73,12 +93,14 @@ export default class Log extends Component {
     }
 
   render() {
-    if (this.state.loading) return <CircularProgress  style={{ marginTop: '15%' }} color={defaultTheme.mainColor} size={60} thickness={7} />
+    if (this.state.loading) return <Progress  />
     return (
-      <Table>
+      <Table
+        height={window.innerHeight * 0.85}
+        fixedHeader={true}
+      >
         <TableHeader displaySelectAll={false}>
           <TableRow>
-            <TableHeaderColumn className="dataColumn">ID</TableHeaderColumn>
             <TableHeaderColumn className="dataColumn">Dato</TableHeaderColumn>
             <TableHeaderColumn className="dataColumn">I Kasse</TableHeaderColumn>
             <TableHeaderColumn className="dataColumn">Fjernet</TableHeaderColumn>
@@ -86,11 +108,10 @@ export default class Log extends Component {
             <TableHeaderColumn className="dataColumn"></TableHeaderColumn>
           </TableRow>
         </TableHeader>
-        <TableBody displayRowCheckbox={false}>
+        <TableBody showRowHover={true} displayRowCheckbox={false}>
           {this.state.firebaseData.map(data => {
             return (
               <TableRow key={data.key} >
-              <TableRowColumn className="dataPoint">{data.key}</TableRowColumn>
               <TableRowColumn className="dataPoint">{data.date.toDateString()}</TableRowColumn>
               <TableRowColumn className="dataPoint">{data.inRegister}</TableRowColumn>
               <TableRowColumn className="dataPoint">{data.removed}</TableRowColumn>

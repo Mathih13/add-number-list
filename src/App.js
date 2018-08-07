@@ -12,10 +12,13 @@ import {
 } from 'react-router-dom'
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
         <div className="App">
-          <NavigationBar />
+          <NavigationBar router={this.props.router} location={this.props.location}/>
           {this.props.children}
         </div>
     );

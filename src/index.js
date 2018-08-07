@@ -16,7 +16,7 @@ const Root = () => (
     <Router history={browserHistory}>
       <Route path={`${process.env.PUBLIC_URL}/`} component={App}>
         <IndexRoute component={Calculator} />
-        <Route path={`${process.env.PUBLIC_URL}/log`} component={Log} />
+        <Route path={`${process.env.PUBLIC_URL}/log/(:search)`} component={Log} />
       </Route>
     </Router>
   </MuiThemeProvider>
