@@ -6,23 +6,20 @@ import Search from 'material-ui/svg-icons/action/search';
 import {defaultTheme} from '../../theme'
 
 import HelpDialog from '../HelpDialog';
+import {filterFirebaseData} from "../../data/actions/firebaseActions";
+
 
 export default class NavigationBar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchText: '',
+      searchText: null,
     };
-    console.log(props)
   }
 
   search(e) {
     e.preventDefault();
-
-  }
-  removeSearch() {
-    this.props.router.push('/log/')
-    this.props.router.go('/log/')
+    filterFirebaseData(this.state.searchText);
   }
 
   render() {

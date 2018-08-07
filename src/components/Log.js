@@ -15,16 +15,12 @@ import Progress from './Progress'
 import {cleanFirebaseData, fetchData} from "../data/actions/firebaseActions";
 
 @connect((store) => ({
-  display: store.display.status
+  firebase: store.firebaseData,
 }))
 
 export default class Log extends Component {
   constructor(props) {
-    super(props)
-    this.state = {
-      loading: true,
-      firebaseData: [],
-    }
+    super(props);
   }
 
   componentDidMount() {
@@ -57,7 +53,7 @@ export default class Log extends Component {
     }
 
   render() {
-    if (this.state.loading) return <Progress  />
+    if (!this.props.firebase.filteredData) return <Progress  />
     return (
       <Table
         height={window.innerHeight * 0.85}
@@ -73,7 +69,7 @@ export default class Log extends Component {
           </TableRow>
         </TableHeader>
         <TableBody showRowHover={true} displayRowCheckbox={false}>
-          {this.state.firebaseData.map(data => {
+          {this.props.firebase.filteredData.map(data => {
             return (
               <TableRow key={data.key} >
               <TableRowColumn className="dataPoint">{data.date.toDateString()}</TableRowColumn>

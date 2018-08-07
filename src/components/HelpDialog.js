@@ -17,7 +17,8 @@ export default class HelpDialog extends React.Component {
     this.state = {
       open: false,
       loading: true,
-      firebaseData: null,
+      helpText: null,
+      helpTextAdvanced: null,
     };
   }
 
@@ -25,8 +26,11 @@ export default class HelpDialog extends React.Component {
 
   fetchData() {
     firebase.database().ref('/help/searchHelpText').once('value', (snapshot) => {
-      this.setState({ firebaseData: snapshot.val(), loading: false });
-    })
+      this.setState({ helpText: snapshot.val() });
+    }).then(() => firebase.database().ref('/help/searchHelpTextAdvanced').once('value', (snapshot) => {
+      this.setState({ helpTextAdvanced: snapshot.val(), loading: false });
+    }))
+
   }
 
   handleOpen = () => {
@@ -53,8 +57,25 @@ export default class HelpDialog extends React.Component {
           onRequestClose={this.handleClose}
         >
           { this.state.loading && <Progress/> }
-          { !this.state.loading && this.state.firebaseData}
-        </Dialog>
+          { !this.state.loading && this.state.helpText.split('. ').map(line => {
+            return (
+              <div>
+              <br />
+              { line + '.'}
+              </div>
+            )
+          })
+          }
+          <h2> Avansert Søk </h2>
+          { !this.state.loading && this.state.helpTextAdvanced.split('. ').map(line => {
+            return (
+              <div>
+                <br />
+                { line + '.'}
+              </div>
+            )
+          })
+          }        </Dialog>
 
         <IconButton tooltip="Hjelp" onClick={() => this.handleOpen()}>
           <Help color={'#fff'} />

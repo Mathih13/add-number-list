@@ -5,8 +5,8 @@ export function fetchData(url) {
   store.dispatch({
     type: 'FETCH_DATA',
     payload: firebase.database().ref('/prints/').once('value')
-  }).then(() => cleanFirebaseData());
-
+  })
+    .then(() => cleanFirebaseData())
 }
 
 export function cleanFirebaseData() {
