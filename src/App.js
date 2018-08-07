@@ -18,7 +18,7 @@ class App extends Component {
   render() {
     return (
         <div className="App">
-          <NavigationBar router={this.props.router} location={this.props.location}/>
+          <NavigationBar children={this.props.children} router={this.props.router} location={this.props.location}/>
           {this.props.children}
         </div>
     );

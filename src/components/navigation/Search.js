@@ -18,7 +18,7 @@ export default class NavigationBar extends Component {
 
   search(e) {
     e.preventDefault();
-    window.location = `${process.env.PUBLIC_URL}/log/${this.state.searchText}`
+
   }
   removeSearch() {
     this.props.router.push('/log/')

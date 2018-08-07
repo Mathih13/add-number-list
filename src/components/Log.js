@@ -9,12 +9,14 @@ import {
 } from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton'
 import ActionPrint from 'material-ui/svg-icons/action/print';
+import {connect} from 'react-redux';
 
-import CircularProgress from 'material-ui/CircularProgress';
 import Progress from './Progress'
+import {cleanFirebaseData, fetchData} from "../data/actions/firebaseActions";
 
-import firebase from '../firebase'
-import {defaultTheme} from '../theme'
+@connect((store) => ({
+  display: store.display.status
+}))
 
 export default class Log extends Component {
   constructor(props) {
@@ -26,46 +28,8 @@ export default class Log extends Component {
   }
 
   componentDidMount() {
-    this.fetchData()
-  }
-
-
-  fetchData() {
-    firebase.database().ref('/prints/').once('value', (snapshot) => {
-      this.setState({ firebaseData: this.snapshotToArray(snapshot), loading: false })
-    })
-  }
-
-  snapshotToArray = (snapshot) => {
-    let returnArr = [];
-    snapshot.forEach(childSnapshot => {
-        let item = childSnapshot.val(); 
-        item.key = childSnapshot.key;
-        item.date = new Date(item.date)
-        returnArr.push(item);
-    });
-
-
-    if (this.props.params.search)
-      return this.filter(this.props.params.search, returnArr);
-    else
-      return returnArr.reverse();
-  };
-
-  filter(search, array) {
-    let returnArr = [];
-    search = search.toLowerCase();
-    array.forEach(item => {
-      if (!item.removed) item.removed = "";
-      if (item.date.toDateString().toLowerCase().includes(search) ||
-        item.inRegister.toString().toLowerCase().includes(search) ||
-        item.remaining.toString().toLowerCase().includes(search) ||
-        item.removed.toString().toLowerCase().includes(search))  {
-
-        returnArr.push(item);
-      }
-    });
-    return returnArr.reverse();
+    fetchData();
+    cleanFirebaseData();
   }
 
   PrintObj(obj) {
