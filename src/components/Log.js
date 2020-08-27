@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import Progress from './Progress'
 import {cleanFirebaseData, fetchData} from "../data/actions/firebaseActions";
 
-@connect((store) => ({
+connect((store) => ({
   firebase: store.firebaseData,
 }))
 
